@@ -1,0 +1,49 @@
+{
+  "lead_id": "ui-003",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-24T15:10:02.912838+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-25T15:52:22.050562+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-25T16:50:40.094633+00:00",
+      "type": "inbound",
+      "text": "Can you guarantee legal commitments in contract by tomorrow?"
+    },
+    {
+      "ts": "2026-03-25T21:18:36.134281+00:00",
+      "type": "inbound",
+      "text": "Can you guarantee legal commitments in contract by tomorrow?"
+    },
+    {
+      "ts": "2026-03-25T21:43:26.304713+00:00",
+      "type": "inbound",
+      "text": "Can you guarantee legal commitments in contract by tomorrow?"
+    },
+    {
+      "ts": "2026-03-27T01:39:22.431348+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users and need pricing."
+    },
+    {
+      "ts": "2026-03-27T01:39:23.825745+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000742008",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-ui-003.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
+    }
+  ]
+}

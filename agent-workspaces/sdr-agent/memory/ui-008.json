@@ -1,0 +1,24 @@
+{
+  "lead_id": "ui-008",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-25T16:50:58.264276+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users and need pricing."
+    },
+    {
+      "ts": "2026-03-25T16:50:58.622548+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-ui-008",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-ui-008.png",
+        "detail": "Contact upsert completed"
+      }
+    }
+  ]
+}

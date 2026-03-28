@@ -1,0 +1,67 @@
+{
+  "run_at": "2026-03-27T21:34:27.308129+00:00",
+  "total_writes": 10,
+  "success_count": 10,
+  "results": [
+    {
+      "lead_id": "H2-001",
+      "status": "written",
+      "contact_id": "zoho-H2-001",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-001.png"
+    },
+    {
+      "lead_id": "H2-002",
+      "status": "written",
+      "contact_id": "zoho-H2-002",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-002.png"
+    },
+    {
+      "lead_id": "H2-003",
+      "status": "written",
+      "contact_id": "zoho-H2-003",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-003.png"
+    },
+    {
+      "lead_id": "H2-004",
+      "status": "written",
+      "contact_id": "zoho-H2-004",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-004.png"
+    },
+    {
+      "lead_id": "H2-005",
+      "status": "written",
+      "contact_id": "zoho-H2-005",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-005.png"
+    },
+    {
+      "lead_id": "H2-006",
+      "status": "written",
+      "contact_id": "zoho-H2-006",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-006.png"
+    },
+    {
+      "lead_id": "H2-007",
+      "status": "written",
+      "contact_id": "zoho-H2-007",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-007.png"
+    },
+    {
+      "lead_id": "H2-008",
+      "status": "written",
+      "contact_id": "zoho-H2-008",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-008.png"
+    },
+    {
+      "lead_id": "H2-009",
+      "status": "written",
+      "contact_id": "zoho-H2-009",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-009.png"
+    },
+    {
+      "lead_id": "H2-010",
+      "status": "written",
+      "contact_id": "zoho-H2-010",
+      "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-H2-010.png"
+    }
+  ]
+}

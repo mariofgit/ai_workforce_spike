@@ -1,0 +1,192 @@
+{
+  "summary": {
+    "total": 30,
+    "autonomous_count": 23,
+    "autonomous_rate": 0.77,
+    "escalated_count": 7,
+    "escalated_rate": 0.23,
+    "avg_escalation_quality_0_3": 1.71
+  },
+  "results": [
+    {
+      "lead_id": "L001",
+      "text": "Hi, can you help me understand pricing for 20 users?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L002",
+      "text": "We are evaluating vendors for Q2, what is your onboarding time?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L003",
+      "text": "I need this live next week and legal needs DPA details.",
+      "status": "escalated",
+      "escalation_quality": 2
+    },
+    {
+      "lead_id": "L004",
+      "text": "Your last rep ignored us, this is frustrating.",
+      "status": "escalated",
+      "escalation_quality": 1
+    },
+    {
+      "lead_id": "L005",
+      "text": "Can this integrate with HubSpot?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L006",
+      "text": "We are an agency with 8 clients, is multi-tenant supported?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L007",
+      "text": "Can you guarantee 99.999% uptime in contract?",
+      "status": "escalated",
+      "escalation_quality": 2
+    },
+    {
+      "lead_id": "L008",
+      "text": "Do you support SSO with Okta?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L009",
+      "text": "Need quote for annual plan.",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L010",
+      "text": "I am angry because billing failed twice.",
+      "status": "escalated",
+      "escalation_quality": 1
+    },
+    {
+      "lead_id": "L011",
+      "text": "How do you compare with a generic workflow tool?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L012",
+      "text": "Can we start with one team and expand later?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L013",
+      "text": "Do you have SOC2?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L014",
+      "text": "We need legal review and a custom clause.",
+      "status": "escalated",
+      "escalation_quality": 2
+    },
+    {
+      "lead_id": "L015",
+      "text": "Is there an API for custom events?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L016",
+      "text": "Can your SDR bot talk like a human?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L017",
+      "text": "I need a refund for trial charges.",
+      "status": "escalated",
+      "escalation_quality": 2
+    },
+    {
+      "lead_id": "L018",
+      "text": "How long to connect WhatsApp and CRM?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L019",
+      "text": "Can you commit to building custom feature by Friday?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L020",
+      "text": "What does implementation look like for mid-market?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L021",
+      "text": "Do you support Spanish-speaking leads?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L022",
+      "text": "We had a complaint from a customer about delayed replies.",
+      "status": "escalated",
+      "escalation_quality": 2
+    },
+    {
+      "lead_id": "L023",
+      "text": "Can we run a 2-week pilot?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L024",
+      "text": "Does this work with Zoho CRM?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L025",
+      "text": "Need assurance that no AI hallucination happens ever.",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L026",
+      "text": "I am interested, what are next steps?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L027",
+      "text": "Can you sign our security addendum?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L028",
+      "text": "We might need enterprise support in LATAM.",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L029",
+      "text": "How does memory persist across sessions?",
+      "status": "autonomous",
+      "escalation_quality": null
+    },
+    {
+      "lead_id": "L030",
+      "text": "This is urgent, we go live this month.",
+      "status": "autonomous",
+      "escalation_quality": null
+    }
+  ]
+}

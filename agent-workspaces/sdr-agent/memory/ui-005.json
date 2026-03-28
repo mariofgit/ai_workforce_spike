@@ -1,0 +1,46 @@
+{
+  "lead_id": "ui-005",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-24T15:10:07.920284+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-25T16:50:52.399554+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users and need pricing."
+    },
+    {
+      "ts": "2026-03-25T16:50:52.793361+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-ui-005",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-ui-005.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-27T01:39:27.920541+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users and need pricing."
+    },
+    {
+      "ts": "2026-03-27T01:39:28.612539+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000742013",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-ui-005.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
+    }
+  ]
+}

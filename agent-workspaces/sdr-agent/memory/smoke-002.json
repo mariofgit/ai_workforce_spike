@@ -1,0 +1,177 @@
+{
+  "lead_id": "smoke-002",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-24T05:24:28.685882+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T05:28:11.039494+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T05:29:29.711969+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T05:29:30.761840+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T05:31:24.230506+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T05:34:39.863770+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T05:36:21.216311+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T05:38:00.267184+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T15:24:02.769583+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T15:26:48.993190+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T15:32:55.215910+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T18:15:17.016153+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-24T18:47:21.445953+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T00:54:03.951342+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T15:45:10.807945+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T16:01:57.396704+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T16:05:42.784801+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T16:25:43.273264+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T16:29:40.309080+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T16:48:26.564128+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T16:58:18.364758+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T17:36:00.823603+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T17:43:34.722138+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T18:45:46.933427+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T19:34:55.398552+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T20:24:58.700376+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-25T20:42:17.637205+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-27T00:33:31.530769+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-27T00:36:04.475404+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-27T00:38:18.832882+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-27T00:41:09.100324+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-27T01:38:27.300723+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-27T18:14:05.655525+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    },
+    {
+      "ts": "2026-03-27T21:34:29.597057+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now"
+    }
+  ]
+}

@@ -1,0 +1,585 @@
+{
+  "lead_id": "smoke-001",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-24T05:24:26.811746+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:24:28.656502+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T05:28:09.396963+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:28:11.011177+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T05:29:27.766826+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:29:29.655335+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T05:29:30.689179+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:29:30.736394+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T05:31:22.987418+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:31:24.205491+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T05:34:38.039159+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:34:39.836131+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T05:36:18.921161+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:36:21.182593+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T05:37:59.073795+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T05:38:00.221397+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T15:23:59.731493+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T15:24:02.741801+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T15:26:43.480311+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T15:26:48.966452+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T15:32:52.313172+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T15:32:55.086707+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T18:15:13.263869+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T18:15:16.988800+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-24T18:47:18.261510+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-24T18:47:21.418481+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T00:54:03.019492+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T00:54:03.853455+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T15:45:09.760611+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T15:45:10.776835+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T16:01:56.658167+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T16:01:57.294190+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T16:05:41.886997+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T16:05:42.505578+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T16:25:42.354108+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T16:25:43.044046+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T16:29:39.810382+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T16:29:40.268365+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T16:48:25.618591+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T16:48:26.470998+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T16:58:17.903538+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T16:58:18.331713+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T17:36:00.037239+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T17:36:00.696948+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T17:43:33.609060+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T17:43:34.664802+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T18:45:46.182013+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T18:45:46.828359+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T19:34:54.916008+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T19:34:55.370775+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T20:24:58.235498+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T20:24:58.666359+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T20:42:17.119852+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-25T20:42:17.601313+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-smoke-001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-27T00:33:28.247518+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-27T00:33:31.456402+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": false,
+        "status": "escalated",
+        "contact_id": null,
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Zoho CRM write error: Client error '400 ' for url 'https://www.zohoapis.com/crm/v8/Contacts'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+      }
+    },
+    {
+      "ts": "2026-03-27T00:36:01.331908+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-27T00:36:04.418421+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": false,
+        "status": "escalated",
+        "contact_id": null,
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Zoho CRM write error: Client error '400 ' for url 'https://www.zohoapis.com/crm/v8/Contacts'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+      }
+    },
+    {
+      "ts": "2026-03-27T00:38:16.932275+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-27T00:38:18.617350+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000746001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
+    },
+    {
+      "ts": "2026-03-27T00:41:07.359771+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-27T00:41:08.965419+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000747001",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
+    },
+    {
+      "ts": "2026-03-27T01:38:23.732662+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-27T01:38:27.222077+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000750002",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
+    },
+    {
+      "ts": "2026-03-27T18:14:03.616702+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-27T18:14:05.562425+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000754003",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
+    },
+    {
+      "ts": "2026-03-27T21:34:27.484993+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users"
+    },
+    {
+      "ts": "2026-03-27T21:34:29.472429+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000756002",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-smoke-001.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
+    }
+  ]
+}

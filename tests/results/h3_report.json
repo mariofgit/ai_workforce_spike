@@ -1,0 +1,12 @@
+{
+  "run_at": "2026-03-27T21:34:27.416908+00:00",
+  "chain": [
+    "whatsapp_inbound_received",
+    "sdr_response_sent",
+    "mcp_to_crm_clerk_sent",
+    "crm_contact_write_confirmed",
+    "audit_events_recorded"
+  ],
+  "human_intervention": false,
+  "happy_path_passed": true
+}

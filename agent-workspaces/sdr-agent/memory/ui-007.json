@@ -1,0 +1,34 @@
+{
+  "lead_id": "ui-007",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-24T15:10:14.272323+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users and need pricing."
+    },
+    {
+      "ts": "2026-03-24T15:10:14.320200+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "zoho-ui-007",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-ui-007.png",
+        "detail": "Contact upsert completed"
+      }
+    },
+    {
+      "ts": "2026-03-25T16:50:56.767383+00:00",
+      "type": "inbound",
+      "text": "Can you guarantee legal commitments in contract by tomorrow?"
+    },
+    {
+      "ts": "2026-03-27T01:39:30.594384+00:00",
+      "type": "inbound",
+      "text": "Can you guarantee legal commitments in contract by tomorrow?"
+    }
+  ]
+}

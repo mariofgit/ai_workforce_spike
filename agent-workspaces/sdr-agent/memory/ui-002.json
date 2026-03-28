@@ -1,0 +1,42 @@
+{
+  "lead_id": "ui-002",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-24T15:09:59.497136+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-24T18:59:50.198643+00:00",
+      "type": "inbound",
+      "text": "Can you guarantee legal commitments in contract by tomorrow?"
+    },
+    {
+      "ts": "2026-03-25T15:47:32.980213+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-25T16:50:36.889288+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-25T21:17:45.390776+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-25T21:42:14.664711+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-27T00:51:56.406888+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    }
+  ]
+}

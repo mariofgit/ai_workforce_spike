@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("SUPABASE_DB_URL")
+  directUrl = env("SUPABASE_DB_DIRECT_URL")
+}
+
+model NapAgentRegistry {
+  id            String   @id @default(uuid()) @db.Uuid
+  agentType     String   @map("agent_type")
+  agentName     String   @map("agent_name")
+  clientKey     String   @map("client_key")
+  sandboxUrl    String?  @map("sandbox_url")
+  status        String   @default("starting")
+  lastHeartbeat DateTime @default(now()) @map("last_heartbeat")
+  metadata      Json     @default("{}")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([clientKey, agentType])
+  @@map("nap_agent_registry")
+}
+
+model NapAgentSecret {
+  id            String   @id @default(uuid()) @db.Uuid
+  agentType     String   @map("agent_type")
+  clientKey     String   @map("client_key")
+  secretName    String   @map("secret_name")
+  encryptedBlob String   @map("encrypted_blob")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@unique([agentType, clientKey, secretName])
+  @@index([agentType, clientKey, isActive])
+  @@map("nap_agent_secrets")
+}
+
+model NapInbox {
+  id               String    @id @default(uuid()) @db.Uuid
+  clientKey        String    @map("client_key")
+  sourceAgentType  String    @map("source_agent_type")
+  targetHumanQueue String    @default("default") @map("target_human_queue")
+  category         String
+  status           String    @default("pending")
+  summary          String
+  question         String?
+  urgency          String    @default("medium")
+  payload          Json      @default("{}")
+  resolvedBy       String?   @map("resolved_by")
+  resolvedAt       DateTime? @map("resolved_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@index([clientKey, status, createdAt])
+  @@map("nap_inbox")
+}
+
+model NapAuditEvent {
+  id             String   @id @default(uuid()) @db.Uuid
+  clientKey      String   @map("client_key")
+  agentType      String   @map("agent_type")
+  eventType      String   @map("event_type")
+  correlationId  String?  @map("correlation_id")
+  inputPayload   Json?    @map("input_payload")
+  outputPayload  Json?    @map("output_payload")
+  screenshotPath String?  @map("screenshot_path")
+  tokenIn        Int      @default(0) @map("token_in")
+  tokenOut       Int      @default(0) @map("token_out")
+  actionCount    Int      @default(1) @map("action_count")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([clientKey, createdAt])
+  @@index([agentType, eventType])
+  @@map("nap_audit_events")
+}
+
+model NapUsageDaily {
+  id            String   @id @default(uuid()) @db.Uuid
+  usageDate     DateTime @map("usage_date") @db.Date
+  clientKey     String   @map("client_key")
+  agentType     String   @map("agent_type")
+  tokenIn       Int      @default(0) @map("token_in")
+  tokenOut      Int      @default(0) @map("token_out")
+  actionCount   Int      @default(0) @map("action_count")
+  eventCount    Int      @default(0) @map("event_count")
+  escalations   Int      @default(0)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@unique([usageDate, clientKey, agentType])
+  @@index([clientKey, usageDate])
+  @@map("nap_usage_daily")
+}

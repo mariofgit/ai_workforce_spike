@@ -1,0 +1,22 @@
+{
+  "lead_id": "ui-006",
+  "facts": {},
+  "open_loops": [],
+  "history": [
+    {
+      "ts": "2026-03-24T15:10:09.781688+00:00",
+      "type": "inbound",
+      "text": "Can you guarantee legal commitments in contract by tomorrow?"
+    },
+    {
+      "ts": "2026-03-25T16:50:54.728647+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    },
+    {
+      "ts": "2026-03-27T01:39:29.265569+00:00",
+      "type": "inbound",
+      "text": "I am angry and want a refund now. This is a complaint."
+    }
+  ]
+}
