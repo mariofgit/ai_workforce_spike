@@ -6,27 +6,14 @@ export async function POST(request: Request) {
     const base = process.env.FINANCE_ANALYST_BASE_URL ?? "http://localhost:8012";
 
     const clientKey = typeof body.client_key === "string" ? body.client_key : "demo-client";
-    const snapshotLabel =
-      typeof body.snapshot_label === "string" ? body.snapshot_label : "ui-wsj-morning-shot";
+    const scope = typeof body.scope === "string" ? body.scope : "wsj:morning-shot";
 
-    let sections: string[] | undefined;
-    if (Array.isArray(body.sections)) {
-      sections = body.sections.filter((s): s is string => typeof s === "string").map((s) => s.trim()).filter(Boolean);
-    }
-    const sessionRef = typeof body.session_ref === "string" ? body.session_ref.trim() : "";
-
-    const forwardBody = {
-      client_key: clientKey,
-      snapshot_label: snapshotLabel,
-      ...(sessionRef ? { session_ref: sessionRef } : {}),
-      ...(sections && sections.length > 0 ? { sections } : {}),
-    };
-
-    const response = await fetch(`${base}/wsj-morning-shot`, {
+    const response = await fetch(`${base}/wsj-session/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(forwardBody),
+      body: JSON.stringify({ client_key: clientKey, scope }),
     });
+
     const json = (await response.json().catch(() => ({ parse_error: true }))) as Record<string, unknown>;
     return NextResponse.json(
       { ok: response.ok, status: response.status, data: json },

@@ -102,6 +102,10 @@ export default function Page() {
   const [lastResult, setLastResult] = useState<JsonValue>(null);
   const [morningShotLog, setMorningShotLog] = useState<JsonValue>(null);
   const [wsjShotLog, setWsjShotLog] = useState<JsonValue>(null);
+  const [wsjSessionLog, setWsjSessionLog] = useState<JsonValue>(null);
+  const [wsjSessionRef, setWsjSessionRef] = useState("");
+  const [wsjSessionCookie, setWsjSessionCookie] = useState("");
+  const [wsjVmUrl, setWsjVmUrl] = useState("");
   const [symbolsCsv, setSymbolsCsv] = useState("");
   const [stateResult, setStateResult] = useState<JsonValue>(null);
   const [crmActivity, setCrmActivity] = useState<JsonValue>(null);
@@ -248,6 +252,7 @@ export default function Page() {
       client_key: clientKey,
       snapshot_label: "ui-wsj-morning-shot",
       sections: ["market_snapshot", "top_headlines", "economy_policy"],
+      session_ref: wsjSessionRef || undefined,
     };
     try {
       const res = await fetch("/api/ui/wsj-morning-shot", {
@@ -261,6 +266,36 @@ export default function Page() {
     } finally {
       setWsjLoading(false);
     }
+  };
+
+  const startWsjSession = async () => {
+    const requestParams = { client_key: clientKey, scope: "wsj:morning-shot" };
+    const res = await fetch("/api/ui/wsj-session/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestParams),
+    });
+    const json = await res.json();
+    setWsjSessionLog({ action: "start", requestParams, response: json });
+    const data = (json?.data ?? {}) as Record<string, unknown>;
+    if (typeof data.session_ref === "string") setWsjSessionRef(data.session_ref);
+    if (typeof data.vm_view_url === "string") setWsjVmUrl(data.vm_view_url);
+  };
+
+  const completeWsjSession = async () => {
+    const requestParams = {
+      client_key: clientKey,
+      session_ref: wsjSessionRef,
+      session_cookie: wsjSessionCookie,
+      artifact_kind: "wsj_session_cookie",
+    };
+    const res = await fetch("/api/ui/wsj-session/complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestParams),
+    });
+    const json = await res.json();
+    setWsjSessionLog({ action: "complete", requestParams: { ...requestParams, session_cookie: "***" }, response: json });
   };
 
   const sendLead = async (text: string) => {
@@ -421,9 +456,35 @@ export default function Page() {
           Authenticated WSJ pages plus Yahoo quotes (active / trending equities) and macro indices. Structured summary
           via OpenAI when <code>OPENAI_API_KEY</code> is set. NAP audit: <code>wsj_morning_shot</code>.
         </p>
+        <div style={{ display: "grid", gap: 8, marginBottom: 10 }}>
+          <button type="button" onClick={() => void startWsjSession()}>
+            Start WSJ login session (ephemeral VM)
+          </button>
+          {wsjVmUrl ? (
+            <a href={wsjVmUrl} target="_blank" rel="noreferrer">
+              Open VM session
+            </a>
+          ) : null}
+          <input
+            value={wsjSessionRef}
+            onChange={(e) => setWsjSessionRef(e.target.value)}
+            placeholder="session_ref"
+            style={{ padding: 8 }}
+          />
+          <input
+            value={wsjSessionCookie}
+            onChange={(e) => setWsjSessionCookie(e.target.value)}
+            placeholder="Paste WSJ cookie from VM session"
+            style={{ padding: 8 }}
+          />
+          <button type="button" onClick={() => void completeWsjSession()} disabled={!wsjSessionRef || !wsjSessionCookie}>
+            Complete WSJ login session
+          </button>
+        </div>
         <button type="button" onClick={() => void runWsjMorningShot()} disabled={wsjLoading}>
           {wsjLoading ? "Running…" : "Run WSJ morning shot"}
         </button>
+        {wsjSessionLog ? <pre style={{ marginTop: 8 }}>{JSON.stringify(wsjSessionLog, null, 2)}</pre> : null}
         {parsedWsjData ? (
           <div className="event-list" style={{ marginTop: 12 }}>
             <div className={`event-row ${parsedWsjData.login_required ? "tone-warn" : "tone-info"}`}>

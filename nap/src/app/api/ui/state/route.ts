@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { napSelfOrigin } from "@/lib/nap-self-origin";
+
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -9,13 +11,14 @@ export async function GET(request: Request) {
       return NextResponse.json({ ok: false, error: "NAP_SERVICE_TOKEN missing in NAP env" }, { status: 500 });
     }
 
+    const origin = napSelfOrigin();
     const auth = { Authorization: `Bearer ${token}` };
     const [auditRes, inboxRes] = await Promise.all([
-      fetch(`http://localhost:${process.env.PORT ?? 3000}/api/nap/audit?clientKey=${encodeURIComponent(clientKey)}`, {
+      fetch(`${origin}/api/nap/audit?clientKey=${encodeURIComponent(clientKey)}`, {
         headers: auth,
       }),
       fetch(
-        `http://localhost:${process.env.PORT ?? 3000}/api/nap/inbox?status=pending&clientKey=${encodeURIComponent(clientKey)}`,
+        `${origin}/api/nap/inbox?status=pending&clientKey=${encodeURIComponent(clientKey)}`,
         { headers: auth },
       ),
     ]);
