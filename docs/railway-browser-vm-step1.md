@@ -1,18 +1,9 @@
-# Railway browser VM - Step 1
+# Railway browser VM — paso 1 (histórico)
 
-## Lo único que hagas ahora en Railway
+**Obsoleto para mini-VM real.** El placeholder con `python -m http.server` y root `agents` **no** da navegador ni login manual.
 
-1. **Create New Service** (desde tu repo actual).
-2. Nombre sugerido: `spike-browser-vm`.
-3. **Root Directory**: `agents`
-4. **Runtime/Builder**: Docker/Nixpacks default (dejalo auto por ahora).
-5. **Start Command** (temporal, para dejarlo vivo):
-   ```bash
-   python -m http.server $PORT
-   ```
-6. Deploy.
-7. En **Networking**, generá dominio público.
-8. Copiame esa URL (ej. `https://spike-browser-vm-production.up.railway.app`).
+Usá en su lugar: **[`railway-browser-vm-real.md`](railway-browser-vm-real.md)** (Dockerfile en `agents/browser-vm`, builder **Dockerfile**, objetivo `COMPUTER_USE_VM_VIEW_BASE_URL` + flujo WSJ).
 
-Con eso yo te doy el siguiente bloque exacto (qué cambiar en env + qué endpoint vamos a conectar primero).
-No toques nada más todavía.
+---
+
+_Repositorio GitHub: `ai_workforce_spike`._

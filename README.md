@@ -2,6 +2,8 @@
 
 Root workspace for the March 2026 Neuforce agent-native spike.
 
+**Repositorio remoto (GitHub):** `ai_workforce_spike`.
+
 ## Scope
 - Agent identity stacks (SDR, CRM Clerk, Finance Analyst)
 - NAP platform (registry, secrets, inbox, audit, usage)

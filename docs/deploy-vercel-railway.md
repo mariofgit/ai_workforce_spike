@@ -1,5 +1,7 @@
 # Deploy: NAP (Vercel) + agents (Railway)
 
+**Repositorio GitHub:** `ai_workforce_spike` (mismo monorepo para Vercel y Railway).
+
 Monorepo layout: **`nap/`** = Next.js + Prisma; **`agents/`** = three FastAPI services (SDR, CRM Clerk, Finance Analyst). In production they talk over HTTPS.
 
 ## 1. Railway — three services from the same repo
@@ -30,7 +32,7 @@ Copy from [`agents/.env.example`](../agents/.env.example). Tune **per service** 
 | `FINANCE_ANALYST_SANDBOX_URL` | **Finance only** | `https://<finance-railway-host>` (no path; used in NAP registry payload) |
 | `SDR_SANDBOX_URL` | SDR (optional) | Public SDR URL if you add registry for SDR later |
 | `CRM_CLERK_SANDBOX_URL` | CRM (optional) | Public CRM URL if used |
-| `COMPUTER_USE_VM_VIEW_BASE_URL` | **Finance only** | Base URL of your mini-VM session gateway |
+| `COMPUTER_USE_VM_VIEW_BASE_URL` | **Finance only** | Base URL HTTPS del gateway mini-VM (servicio **`spike-browser-vm`**). Ver [railway-browser-vm-real.md](railway-browser-vm-real.md). |
 | `COMPUTER_USE_SESSION_TTL_SECONDS` | **Finance only** | Session hard timeout (e.g. `900`) |
 | `COMPUTER_USE_VAULT_KEY` | **Finance only** | Random secret used for session vault encryption key derivation |
 
@@ -83,7 +85,11 @@ Alternatively, add a CI step or a one-off script; avoid repeating destructive fl
 - `GET https://<vercel>/api/health` (if exposed)
 - UI flows that hit `/api/ui/*` should proxy to the three Railway bases via server-side `fetch` (no browser CORS to agents).
 
-## 5. WSJ computer-use flow (ephemeral VM)
+## 5. Cuarto servicio Railway (mini-VM real)
+
+Además de `spike-sdr`, `spike-crm-clerk` y `spike-finance`, desplegá **`spike-browser-vm`** con root **`agents/browser-vm`** y builder **Dockerfile**. Pasos exactos: [railway-browser-vm-real.md](railway-browser-vm-real.md).
+
+## 6. WSJ computer-use flow (ephemeral VM)
 
 1. `POST /api/ui/wsj-session/start` from NAP UI/backend.
 2. Open `vm_view_url` and complete WSJ login manually.
