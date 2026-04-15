@@ -1,33 +1,24 @@
-# Computer-use security guardrails (WSJ flow)
+# WSJ + Browserbase (human-in-the-loop)
 
-## Isolation model
+## Model
 
-- One **ephemeral VM session** per WSJ login flow.
-- VM is disposable and must be destroyed on completion/timeout.
-- No host desktop access is granted to the agent.
+- WSJ pages run in a **Browserbase** managed browser (not on the Finance host).
+- **Playwright** connects over CDP; sessions end with `sessions.update(..., status="REQUEST_RELEASE")` after a successful scrape.
+- **Cookie persistence** uses Browserbase `persistCookies` on the session plus your **project** configuration (`BROWSERBASE_PROJECT_ID`).
 
-## Credential handling
+## Credentials
 
-- PoC uses `wsj_session_cookie` artifact only (no shared username/password persistence).
-- Cookie artifacts are stored in a TTL vault and masked in logs/audit payloads.
-- Session artifacts are scoped to `client_key` and `session_ref`.
+- The Finance agent **never** receives usernames or passwords.
+- When a login wall is detected, the API returns `REQUIRES_AUTH` and an **interactive Live View** URL for the user to sign in at WSJ.
+- Optional legacy path: `WSJ_SESSION_COOKIE` for direct HTTP fetch without Browserbase (no Live View).
 
-## Runtime constraints
+## Auditing
 
-- Egress allowlist is projected from policy (`wsj.com` domains only by default).
-- Clipboard and file transfer are disabled by policy defaults.
-- Max session duration is capped by `COMPUTER_USE_SESSION_TTL_SECONDS`.
+- `wsj_morning_shot` events are still posted to NAP when configured.
+- Session cookie values are not returned to the client on success paths (HTML is processed server-side).
 
-## Operational controls
+## Operations
 
-- Kill-switch: invalidate `session_ref` in vault and stop VM session.
-- Audit events emitted:
-  - `wsj_session_started`
-  - `wsj_session_completed`
-  - `wsj_morning_shot`
-- Expired sessions must return explicit re-login action (`login_required`).
-
-## Migration path (OAuth)
-
-Current artifact model already supports `oauth_access_token` type.
-Future implementation should enforce delegated OAuth, token refresh, and scope validation.
+- Rotate `BROWSERBASE_API_KEY` and review Browserbase project access controls.
+- Session timeout is controlled by `BROWSERBASE_SESSION_TIMEOUT_SECONDS` (Browserbase `api_timeout`).
+- Respect WSJ terms of use and applicable compliance rules.

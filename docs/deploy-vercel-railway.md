@@ -32,13 +32,12 @@ Copy from [`agents/.env.example`](../agents/.env.example). Tune **per service** 
 | `FINANCE_ANALYST_SANDBOX_URL` | **Finance only** | `https://<finance-railway-host>` (no path; used in NAP registry payload) |
 | `SDR_SANDBOX_URL` | SDR (optional) | Public SDR URL if you add registry for SDR later |
 | `CRM_CLERK_SANDBOX_URL` | CRM (optional) | Public CRM URL if used |
-| `COMPUTER_USE_VM_VIEW_BASE_URL` | **Finance only** | Base URL HTTPS del gateway mini-VM (servicio **`spike-browser-vm`**). Ver [railway-browser-vm-real.md](railway-browser-vm-real.md). |
-| `COMPUTER_USE_SESSION_TTL_SECONDS` | **Finance only** | Session hard timeout (e.g. `900`) |
-| `COMPUTER_USE_VAULT_KEY` | **Finance only** | Random secret used for session vault encryption key derivation |
+| `BROWSERBASE_API_KEY` | **Finance** (WSJ cloud browser) | See [browserbase-wsj.md](browserbase-wsj.md). |
+| `BROWSERBASE_PROJECT_ID` | **Finance** (required for WSJ cloud browser) | Browserbase project id (passed to every `sessions.create`). |
 
 **Ports:** Railway injects `PORT`. Do not force `SDR_PORT` / `CRM_CLERK_PORT` / `FINANCE_ANALYST_PORT` for binding; start commands use `$PORT` above.
 
-Add Zoho, `OPENAI_API_KEY`, `WSJ_SESSION_COOKIE`, etc. as needed.
+Add Zoho, `OPENAI_API_KEY`, `WSJ_SESSION_COOKIE` (legacy HTTP-only WSJ), etc. as needed.
 
 ## 2. Vercel — NAP (`nap/`)
 
@@ -85,13 +84,13 @@ Alternatively, add a CI step or a one-off script; avoid repeating destructive fl
 - `GET https://<vercel>/api/health` (if exposed)
 - UI flows that hit `/api/ui/*` should proxy to the three Railway bases via server-side `fetch` (no browser CORS to agents).
 
-## 5. Cuarto servicio Railway (mini-VM real)
+## 5. WSJ flow (Browserbase)
 
-Además de `spike-sdr`, `spike-crm-clerk` y `spike-finance`, desplegá **`spike-browser-vm`** con root **`agents/browser-vm`** y builder **Dockerfile**. Pasos exactos: [railway-browser-vm-real.md](railway-browser-vm-real.md).
+WSJ HTML is loaded in a **Browserbase** cloud session (see [browserbase-wsj.md](browserbase-wsj.md)). No fourth Railway service is required. Configure `BROWSERBASE_API_KEY` (and optional context/project vars) on **spike-finance**.
 
-## 6. WSJ computer-use flow (ephemeral VM)
+## 6. WSJ UI flow (NAP)
 
-1. `POST /api/ui/wsj-session/start` from NAP UI/backend.
-2. Open `vm_view_url` and complete WSJ login manually.
-3. `POST /api/ui/wsj-session/complete` with `session_ref` and session cookie captured from VM.
-4. Run `POST /api/ui/wsj-morning-shot` with `session_ref` so finance-agent resolves auth from vault.
+1. `POST /api/ui/wsj-morning-shot` proxies to Finance.
+2. If Finance returns `REQUIRES_AUTH`, the console shows the Browserbase **Live View** URL (iframe or new tab).
+3. After the user signs in at the publisher, **Continue after sign-in** resends the request with `browserbase_session_id`.
+4. Finance completes scraping and releases the Browserbase session; cookies can persist in the configured **context** for the next run.

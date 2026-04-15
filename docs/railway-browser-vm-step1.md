@@ -1,9 +1,5 @@
-# Railway browser VM — paso 1 (histórico)
+# Obsoleto: mini-VM Docker en Railway
 
-**Obsoleto para mini-VM real.** El placeholder con `python -m http.server` y root `agents` **no** da navegador ni login manual.
+El spike **ya no** usa el servicio Docker `agents/browser-vm`. El flujo WSJ con login humano pasa por **Browserbase**.
 
-Usá en su lugar: **[`railway-browser-vm-real.md`](railway-browser-vm-real.md)** (Dockerfile en `agents/browser-vm`, builder **Dockerfile**, objetivo `COMPUTER_USE_VM_VIEW_BASE_URL` + flujo WSJ).
-
----
-
-_Repositorio GitHub: `ai_workforce_spike`._
+Documentación actual: **[`browserbase-wsj.md`](browserbase-wsj.md)**.

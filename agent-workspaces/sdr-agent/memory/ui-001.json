@@ -206,6 +206,23 @@
         "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-ui-001.png",
         "detail": "Zoho CRM write completed: record added"
       }
+    },
+    {
+      "ts": "2026-04-11T00:18:25.455224+00:00",
+      "type": "inbound",
+      "text": "Hi, we are evaluating options for 20 users and need pricing."
+    },
+    {
+      "ts": "2026-04-11T00:18:28.845870+00:00",
+      "type": "outbound",
+      "status": "handled",
+      "crm": {
+        "ok": true,
+        "status": "written",
+        "contact_id": "7288355000000796003",
+        "screenshot_path": "/Users/mario.restrepo/www/neuForce/neuforce-ai-workforce-spike/tests/evidence/crm-write-ui-001.png",
+        "detail": "Zoho CRM write completed: record added"
+      }
     }
   ]
 }

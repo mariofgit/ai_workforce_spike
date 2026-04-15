@@ -1,25 +1,24 @@
-# AI-Native agent architecture (PoC)
+# AI-native agent architecture (PoC)
 
-This spike separates **Cognitive Blueprint** and **Runtime Engine** for the WSJ computer-use flow.
+This spike separates **declared behavior** from **runtime execution** for the WSJ morning-shot flow.
 
-## Cognitive Blueprint (declarative)
+## Declarative surface
 
-- Capability contract: `wsj_session_start`, `wsj_session_complete`, `wsj_morning_shot`.
-- Auth artifacts: `wsj_session_cookie` (PoC) and `oauth_access_token` (future path).
-- Safety constraints projected to runtime:
-  - egress allowlist
-  - clipboard disabled
-  - file transfer disabled
-  - strict max session duration
+- Primary Finance endpoint: `POST /wsj-morning-shot`.
+- States returned to NAP:
+  - **Success** — structured summary + facts pack.
+  - **`REQUIRES_AUTH`** — Browserbase Live View URL + `browserbase_session_id` for human login at WSJ.
+- Optional legacy: `WSJ_SESSION_COOKIE` for HTTP-only fetch when `BROWSERBASE_API_KEY` is unset.
 
-## Runtime Engine (execution)
+## Runtime (Finance)
 
-- `EphemeralVmProvider`: starts/stops ephemeral VM sessions and exposes user view URL.
-- `SessionVault`: stores encrypted (PoC in-memory) auth artifact with TTL.
-- Finance Analyst resolves `session_ref` and runs WSJ extraction with controlled session material.
+- **Browserbase SDK** creates sessions with `project_id` from env and `browser_settings.persistCookies` (project default persistent storage).
+- **Playwright** (`connect_over_cdp`) loads WSJ routes; heuristics in `runtime/browserbase_wsj.py` detect login walls.
+- **`sessions.debug`** exposes `debugger_fullscreen_url` for embedding in NAP.
+- **`sessions.update(..., status="REQUEST_RELEASE")`** ends the session after a successful scrape; cookies remain in the Browserbase context for later runs.
 
 ## Why this split
 
-- Keeps policy/safety explicit and versionable.
-- Avoids coupling core analysis logic to a specific VM vendor.
-- Supports migration from cookie-based PoC to delegated OAuth without changing endpoint semantics.
+- Credentials stay between the user and the publisher (WSJ), not NAP/Finance.
+- Swapping browser vendors mostly touches `runtime/browserbase_wsj.py` and env vars.
+- Yahoo quotes and OpenAI summarization stay decoupled from browser automation.

@@ -27,6 +27,15 @@ type WsjEquityFact = {
   quote?: MorningQuote;
 };
 
+const WSJ_RUN_STEPS = [
+  "Connecting to Browserbase and Playwright…",
+  "Resuming or creating cloud browser session…",
+  "Session probe (sign-in / SSO) if enabled…",
+  "Navigating WSJ (markets, headlines, economy)…",
+  "Extracting HTML and Yahoo quotes…",
+  "Building morning shot (optional OpenAI summary + NAP audit)…",
+] as const;
+
 type StructuredSummary = {
   disclaimer?: string;
   sections: Array<{ id: string; title: string; bullets: string[] }>;
@@ -102,16 +111,27 @@ export default function Page() {
   const [lastResult, setLastResult] = useState<JsonValue>(null);
   const [morningShotLog, setMorningShotLog] = useState<JsonValue>(null);
   const [wsjShotLog, setWsjShotLog] = useState<JsonValue>(null);
-  const [wsjSessionLog, setWsjSessionLog] = useState<JsonValue>(null);
-  const [wsjSessionRef, setWsjSessionRef] = useState("");
-  const [wsjSessionCookie, setWsjSessionCookie] = useState("");
-  const [wsjVmUrl, setWsjVmUrl] = useState("");
+  const [wsjBrowserbaseSessionId, setWsjBrowserbaseSessionId] = useState("");
+  const [wsjLiveViewUrl, setWsjLiveViewUrl] = useState("");
   const [symbolsCsv, setSymbolsCsv] = useState("");
   const [stateResult, setStateResult] = useState<JsonValue>(null);
   const [crmActivity, setCrmActivity] = useState<JsonValue>(null);
   const [loading, setLoading] = useState(false);
   const [morningLoading, setMorningLoading] = useState(false);
   const [wsjLoading, setWsjLoading] = useState(false);
+  const [wsjBlockingError, setWsjBlockingError] = useState("");
+  const [wsjRunStepIndex, setWsjRunStepIndex] = useState(0);
+
+  useEffect(() => {
+    if (!wsjLoading) {
+      setWsjRunStepIndex(0);
+      return;
+    }
+    const t = window.setInterval(() => {
+      setWsjRunStepIndex((i) => (i + 1) % WSJ_RUN_STEPS.length);
+    }, 2200);
+    return () => window.clearInterval(t);
+  }, [wsjLoading]);
 
   const parsedMorningQuotes = (() => {
     if (!morningShotLog || typeof morningShotLog !== "object" || !("response" in morningShotLog)) return [];
@@ -248,54 +268,50 @@ export default function Page() {
   };
   const runWsjMorningShot = async () => {
     setWsjLoading(true);
-    const requestParams = {
+    setWsjBlockingError("");
+    const sid = wsjBrowserbaseSessionId.trim();
+    const requestParams: Record<string, unknown> = {
       client_key: clientKey,
       snapshot_label: "ui-wsj-morning-shot",
       sections: ["market_snapshot", "top_headlines", "economy_policy"],
-      session_ref: wsjSessionRef || undefined,
     };
+    if (sid) {
+      requestParams.browserbase_session_id = sid;
+    }
     try {
       const res = await fetch("/api/ui/wsj-morning-shot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestParams),
       });
-      const json = await res.json();
+      const json = (await res.json()) as Record<string, unknown>;
       setWsjShotLog({ requestParams, response: json });
+      const data = (json?.data ?? {}) as Record<string, unknown>;
+      const napHttpOk = typeof json?.ok === "boolean" ? json.ok : res.ok;
+      if (data.state === "REQUIRES_AUTH" || data.error === "REQUIRES_AUTH") {
+        if (typeof data.browserbase_session_id === "string") {
+          setWsjBrowserbaseSessionId(data.browserbase_session_id);
+        }
+        if (typeof data.interactive_live_view_url === "string") {
+          setWsjLiveViewUrl(data.interactive_live_view_url);
+        }
+        setWsjBlockingError("");
+      } else if (data.ok === true) {
+        setWsjLiveViewUrl("");
+        setWsjBrowserbaseSessionId("");
+        setWsjBlockingError("");
+      } else {
+        const parts: string[] = [];
+        if (!napHttpOk) parts.push(`Finance/NAP HTTP error (wrapper ok=${String(json.ok)})`);
+        if (typeof data.error === "string") parts.push(data.error);
+        if (typeof data.detail === "string") parts.push(data.detail);
+        if (typeof data.message === "string") parts.push(data.message);
+        setWsjBlockingError(parts.length > 0 ? parts.join(" — ") : `Unexpected response: ${JSON.stringify(data)}`);
+      }
       await refreshState();
     } finally {
       setWsjLoading(false);
     }
-  };
-
-  const startWsjSession = async () => {
-    const requestParams = { client_key: clientKey, scope: "wsj:morning-shot" };
-    const res = await fetch("/api/ui/wsj-session/start", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestParams),
-    });
-    const json = await res.json();
-    setWsjSessionLog({ action: "start", requestParams, response: json });
-    const data = (json?.data ?? {}) as Record<string, unknown>;
-    if (typeof data.session_ref === "string") setWsjSessionRef(data.session_ref);
-    if (typeof data.vm_view_url === "string") setWsjVmUrl(data.vm_view_url);
-  };
-
-  const completeWsjSession = async () => {
-    const requestParams = {
-      client_key: clientKey,
-      session_ref: wsjSessionRef,
-      session_cookie: wsjSessionCookie,
-      artifact_kind: "wsj_session_cookie",
-    };
-    const res = await fetch("/api/ui/wsj-session/complete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestParams),
-    });
-    const json = await res.json();
-    setWsjSessionLog({ action: "complete", requestParams: { ...requestParams, session_cookie: "***" }, response: json });
   };
 
   const sendLead = async (text: string) => {
@@ -452,48 +468,85 @@ export default function Page() {
 
       <div className="wsj-shot-shell">
         <CollapsibleSection title="WSJ morning shot (risk summary + market data)" className="wsj-shot-panel" defaultOpen>
-        <p style={{ marginTop: 0, opacity: 0.85 }}>
-          Authenticated WSJ pages plus Yahoo quotes (active / trending equities) and macro indices. Structured summary
-          via OpenAI when <code>OPENAI_API_KEY</code> is set. NAP audit: <code>wsj_morning_shot</code>.
-        </p>
+        {wsjLoading ? (
+          <p
+            style={{
+              marginTop: 0,
+              marginBottom: 0,
+              padding: "10px 12px",
+              borderRadius: 6,
+              background: "rgba(59, 130, 246, 0.12)",
+              border: "1px solid rgba(59, 130, 246, 0.35)",
+              fontWeight: 600,
+              lineHeight: 1.45,
+            }}
+            aria-live="polite"
+          >
+            {WSJ_RUN_STEPS[wsjRunStepIndex]}
+          </p>
+        ) : (
+          <p style={{ marginTop: 0, opacity: 0.85 }}>
+            WSJ HTML via <strong>Browserbase</strong> (Playwright + persisted context). Yahoo quotes and optional OpenAI
+            summary unchanged. NAP audit: <code>wsj_morning_shot</code>. Use <strong>Check WSJ session</strong> to start (session
+            probe + morning shot when already signed in). If Finance returns <code>REQUIRES_AUTH</code>, sign in via the Live
+            View below, then use <strong>Run morning shot</strong> to continue with the same Browserbase session. Alternatively
+            set <code>WSJ_SESSION_COOKIE</code> on Finance for legacy HTTP-only fetch without Browserbase. If{" "}
+            <code>WSJ_FORCE_REQUIRES_AUTH=true</code> is set on Finance, every run returns <code>REQUIRES_AUTH</code> only —
+            turn it off after testing Live View so the scrape can finish and this panel can clear.
+          </p>
+        )}
         <div style={{ display: "grid", gap: 8, marginBottom: 10 }}>
-          <button type="button" onClick={() => void startWsjSession()}>
-            Start WSJ login session (ephemeral VM)
+          <button type="button" onClick={() => void runWsjMorningShot()} disabled={wsjLoading}>
+            {wsjLoading ? "Running…" : "Check WSJ session"}
           </button>
-          {wsjVmUrl ? (
-            <a href={wsjVmUrl} target="_blank" rel="noreferrer">
-              Open VM session
-            </a>
+          {wsjLiveViewUrl ? (
+            <div style={{ display: "grid", gap: 8 }}>
+              <p style={{ margin: 0, opacity: 0.9 }}>
+                Sign in to WSJ in the embedded Live View (or{" "}
+                <a href={wsjLiveViewUrl} target="_blank" rel="noreferrer">
+                  open in a new tab
+                </a>
+                ). Session: <code>{wsjBrowserbaseSessionId || "—"}</code>
+              </p>
+              <iframe
+                title="Browserbase Live View"
+                src={wsjLiveViewUrl}
+                sandbox="allow-same-origin allow-scripts allow-forms"
+                allow="clipboard-read; clipboard-write"
+                style={{ width: "100%", height: 520, border: "1px solid #ccc", borderRadius: 4 }}
+              />
+              <button type="button" onClick={() => void runWsjMorningShot()} disabled={wsjLoading || !wsjBrowserbaseSessionId}>
+                {wsjLoading ? "Running…" : "Run morning shot"}
+              </button>
+            </div>
           ) : null}
-          <input
-            value={wsjSessionRef}
-            onChange={(e) => setWsjSessionRef(e.target.value)}
-            placeholder="session_ref"
-            style={{ padding: 8 }}
-          />
-          <input
-            value={wsjSessionCookie}
-            onChange={(e) => setWsjSessionCookie(e.target.value)}
-            placeholder="Paste WSJ cookie from VM session"
-            style={{ padding: 8 }}
-          />
-          <button type="button" onClick={() => void completeWsjSession()} disabled={!wsjSessionRef || !wsjSessionCookie}>
-            Complete WSJ login session
-          </button>
         </div>
-        <button type="button" onClick={() => void runWsjMorningShot()} disabled={wsjLoading}>
-          {wsjLoading ? "Running…" : "Run WSJ morning shot"}
-        </button>
-        {wsjSessionLog ? <pre style={{ marginTop: 8 }}>{JSON.stringify(wsjSessionLog, null, 2)}</pre> : null}
+        {wsjBlockingError ? (
+          <p className="tone-warn" style={{ marginTop: 0 }}>
+            {wsjBlockingError}
+          </p>
+        ) : null}
         {parsedWsjData ? (
           <div className="event-list" style={{ marginTop: 12 }}>
-            <div className={`event-row ${parsedWsjData.login_required ? "tone-warn" : "tone-info"}`}>
+            <div
+              className={`event-row ${
+                parsedWsjData.state === "REQUIRES_AUTH" || parsedWsjData.error === "REQUIRES_AUTH"
+                  ? "tone-warn"
+                  : parsedWsjData.login_required
+                    ? "tone-warn"
+                    : "tone-info"
+              }`}
+            >
               <span className="pill">source: {String(parsedWsjData.source ?? "wsj")}</span>
               <span className="pill">headlines: {wsjHeadlines.length}</span>
               <span className="pill">economy: {wsjEconomy.length}</span>
               <span className="pill">equities: {wsjEquityFacts.length}</span>
               <span className="event-id">
-                {parsedWsjData.login_required ? "login or session required" : "session ok"}
+                {parsedWsjData.state === "REQUIRES_AUTH" || parsedWsjData.error === "REQUIRES_AUTH"
+                  ? "REQUIRES_AUTH — Live View, then Run morning shot"
+                  : parsedWsjData.login_required
+                    ? "login or session required"
+                    : "session ok"}
               </span>
             </div>
           </div>

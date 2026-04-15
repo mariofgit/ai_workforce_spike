@@ -13,12 +13,13 @@ export async function POST(request: Request) {
     if (Array.isArray(body.sections)) {
       sections = body.sections.filter((s): s is string => typeof s === "string").map((s) => s.trim()).filter(Boolean);
     }
-    const sessionRef = typeof body.session_ref === "string" ? body.session_ref.trim() : "";
+    const browserbaseSessionId =
+      typeof body.browserbase_session_id === "string" ? body.browserbase_session_id.trim() : "";
 
     const forwardBody = {
       client_key: clientKey,
       snapshot_label: snapshotLabel,
-      ...(sessionRef ? { session_ref: sessionRef } : {}),
+      ...(browserbaseSessionId ? { browserbase_session_id: browserbaseSessionId } : {}),
       ...(sections && sections.length > 0 ? { sections } : {}),
     };
 

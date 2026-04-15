@@ -13,8 +13,7 @@ import yfinance as yf
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-from runtime.computer_use import AuthArtifact, EphemeralVmProvider, SessionVault
-from runtime.computer_use.policy import default_session_policy
+from runtime.browserbase_wsj import REQUIRES_AUTH_STATE, fetch_wsj_pages_via_browserbase
 from runtime.nap_client import NapClient
 
 app = FastAPI(title="Neuforce Finance Analyst Agent")
@@ -64,9 +63,6 @@ _WSJ_TICKER_NOISE = frozenset(
 )
 
 nap = NapClient()
-vm_provider = EphemeralVmProvider()
-session_vault = SessionVault()
-session_policy = default_session_policy()
 
 
 class MorningShotRequest(BaseModel):
@@ -91,25 +87,10 @@ class WsjMorningShotRequest(BaseModel):
         default=None,
         description="Optional sections to fetch: market_snapshot, top_headlines, economy_policy",
     )
-    session_ref: str | None = Field(
+    browserbase_session_id: str | None = Field(
         default=None,
-        description="Session reference issued by computer-use WSJ login flow",
+        description="Resume an open Browserbase session after REQUIRES_AUTH (Live View login).",
     )
-
-
-class WsjSessionStartRequest(BaseModel):
-    client_key: str = Field(default="demo-client")
-    scope: str = Field(default="wsj:morning-shot")
-
-
-class WsjSessionCompleteRequest(BaseModel):
-    client_key: str = Field(default="demo-client")
-    session_ref: str
-    session_cookie: str = Field(
-        default="",
-        description="WSJ cookie captured from VM flow after manual login",
-    )
-    artifact_kind: str = Field(default="wsj_session_cookie")
 
 
 def _mask_secret(secret: str) -> str:
@@ -555,53 +536,78 @@ async def wsj_morning_shot(body: WsjMorningShotRequest):
     headlines_path = os.getenv("WSJ_HEADLINES_PATH", "/news")
     economy_path = os.getenv("WSJ_ECONOMY_PATH", "/economy")
 
-    session_artifact: AuthArtifact | None = None
-    session_cookie = ""
-    auth_mode = "env_cookie_fallback"
-    if body.session_ref:
-        session_artifact = session_vault.get(session_ref=body.session_ref, client_key=body.client_key)
-        if session_artifact and session_artifact.kind == "wsj_session_cookie":
-            session_cookie = session_artifact.value
-            auth_mode = "session_ref_vault"
-        elif session_artifact and session_artifact.kind == "oauth_access_token":
-            auth_mode = "oauth_token_placeholder"
-    if not session_cookie:
-        session_cookie = os.getenv("WSJ_SESSION_COOKIE", "").strip()
-    if not session_cookie:
-        return {
-            "ok": False,
-            "error": "login_required",
-            "next_action": "start computer-use session and complete WSJ login",
-            "session_ref": body.session_ref,
-        }
+    path_by_section = {
+        "market_snapshot": markets_path,
+        "top_headlines": headlines_path,
+        "economy_policy": economy_path,
+    }
 
     pages: dict[str, dict] = {}
     errors: list[str] = []
-    async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
-        if "market_snapshot" in requested_sections:
-            try:
-                pages["market_snapshot"] = await _fetch_wsj_page(
-                    client, base, markets_path, session_cookie=session_cookie
-                )
-            except Exception as e:  # noqa: BLE001
-                errors.append(f"market_snapshot: {e}")
-                pages["market_snapshot"] = {"ok": False, "error": str(e)}
-        if "top_headlines" in requested_sections:
-            try:
-                pages["top_headlines"] = await _fetch_wsj_page(
-                    client, base, headlines_path, session_cookie=session_cookie
-                )
-            except Exception as e:  # noqa: BLE001
-                errors.append(f"top_headlines: {e}")
-                pages["top_headlines"] = {"ok": False, "error": str(e)}
-        if "economy_policy" in requested_sections:
-            try:
-                pages["economy_policy"] = await _fetch_wsj_page(
-                    client, base, economy_path, session_cookie=session_cookie
-                )
-            except Exception as e:  # noqa: BLE001
-                errors.append(f"economy_policy: {e}")
-                pages["economy_policy"] = {"ok": False, "error": str(e)}
+    auth_mode = "browserbase"
+    last_bb_session_id: str | None = None
+    session_cookie = ""
+
+    if os.getenv("BROWSERBASE_API_KEY", "").strip():
+        bb_result = await fetch_wsj_pages_via_browserbase(
+            client_key=body.client_key,
+            requested_sections=requested_sections,
+            browserbase_session_id=(body.browserbase_session_id or "").strip() or None,
+            base_url=base,
+            paths=path_by_section,
+        )
+        if bb_result.get("state") == REQUIRES_AUTH_STATE:
+            return {
+                "ok": False,
+                "error": "REQUIRES_AUTH",
+                "state": REQUIRES_AUTH_STATE,
+                "browserbase_session_id": bb_result.get("browserbase_session_id"),
+                "interactive_live_view_url": bb_result.get("interactive_live_view_url"),
+                "message": bb_result.get("message"),
+            }
+        if not bb_result.get("ok"):
+            return {
+                "ok": False,
+                "error": bb_result.get("error", "browserbase_failed"),
+                "detail": bb_result.get("detail"),
+                "browserbase_status": bb_result.get("browserbase_status"),
+            }
+        pages = bb_result.get("pages") or {}
+        last_bb_session_id = bb_result.get("browserbase_session_id")
+    else:
+        session_cookie = os.getenv("WSJ_SESSION_COOKIE", "").strip()
+        if not session_cookie:
+            return {
+                "ok": False,
+                "error": "configure_BROWSERBASE_API_KEY_or_WSJ_SESSION_COOKIE",
+                "hint": "Set BROWSERBASE_API_KEY for cloud browser + Live View, or WSJ_SESSION_COOKIE for legacy HTTP fetch only.",
+            }
+        auth_mode = "wsj_session_cookie_env"
+        async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
+            if "market_snapshot" in requested_sections:
+                try:
+                    pages["market_snapshot"] = await _fetch_wsj_page(
+                        client, base, markets_path, session_cookie=session_cookie
+                    )
+                except Exception as e:  # noqa: BLE001
+                    errors.append(f"market_snapshot: {e}")
+                    pages["market_snapshot"] = {"ok": False, "error": str(e)}
+            if "top_headlines" in requested_sections:
+                try:
+                    pages["top_headlines"] = await _fetch_wsj_page(
+                        client, base, headlines_path, session_cookie=session_cookie
+                    )
+                except Exception as e:  # noqa: BLE001
+                    errors.append(f"top_headlines: {e}")
+                    pages["top_headlines"] = {"ok": False, "error": str(e)}
+            if "economy_policy" in requested_sections:
+                try:
+                    pages["economy_policy"] = await _fetch_wsj_page(
+                        client, base, economy_path, session_cookie=session_cookie
+                    )
+                except Exception as e:  # noqa: BLE001
+                    errors.append(f"economy_policy: {e}")
+                    pages["economy_policy"] = {"ok": False, "error": str(e)}
 
     market_html = str(pages.get("market_snapshot", {}).get("html", ""))
     market_snapshot = _extract_market_snapshot(market_html)
@@ -661,7 +667,7 @@ async def wsj_morning_shot(body: WsjMorningShotRequest):
     output_payload = {
         "snapshot_label": body.snapshot_label,
         "generated_at": generated_at,
-        "source": "wsj_authenticated",
+        "source": "wsj_browserbase" if auth_mode == "browserbase" else "wsj_cookie_env",
         "requested_sections": requested_sections,
         "market_snapshot": market_snapshot,
         "top_headlines": top_headlines,
@@ -678,9 +684,11 @@ async def wsj_morning_shot(body: WsjMorningShotRequest):
                 "top_headlines": headlines_path,
                 "economy_policy": economy_path,
             },
+            "browserbase_configured": bool(os.getenv("BROWSERBASE_API_KEY", "").strip()),
+            "browserbase_project_id_configured": bool(os.getenv("BROWSERBASE_PROJECT_ID", "").strip()),
+            "browserbase_session_id": last_bb_session_id,
             "session_cookie_configured": bool(os.getenv("WSJ_SESSION_COOKIE", "").strip()),
-            "session_ref_provided": bool(body.session_ref),
-            "session_cookie_masked": _mask_secret(session_cookie),
+            "session_cookie_masked": _mask_secret(session_cookie) if session_cookie else "",
             "openai_configured": bool(os.getenv("OPENAI_API_KEY", "").strip()),
             "min_equities_target": MIN_WSJ_EQUITIES,
         },
@@ -689,7 +697,7 @@ async def wsj_morning_shot(body: WsjMorningShotRequest):
         "client_key": body.client_key,
         "snapshot_label": body.snapshot_label,
         "sections": requested_sections,
-        "session_ref": body.session_ref,
+        "browserbase_session_id": body.browserbase_session_id,
     }
 
     audit_response: dict | None = None
@@ -715,73 +723,6 @@ async def wsj_morning_shot(body: WsjMorningShotRequest):
         "correlation_id": correlation_id,
         "nap_audit": audit_response,
         **output_payload,
-    }
-
-
-@app.post("/wsj-session/start")
-async def wsj_session_start(body: WsjSessionStartRequest):
-    session_ref = f"wsj-{uuid.uuid4()}"
-    handle = vm_provider.start(client_key=body.client_key, session_ref=session_ref, policy=session_policy)
-    try:
-        await nap.post_audit(
-            {
-                "clientKey": body.client_key,
-                "agentType": "finance-analyst",
-                "eventType": "wsj_session_started",
-                "correlationId": str(uuid.uuid4()),
-                "inputPayload": {"scope": body.scope},
-                "outputPayload": handle.model_dump(mode="json"),
-                "tokenIn": 1,
-                "tokenOut": 1,
-                "actionCount": 1,
-            }
-        )
-    except Exception:
-        pass
-    return {
-        "ok": True,
-        "session_ref": session_ref,
-        "vm_view_url": handle.vm_view_url,
-        "expires_at": handle.expires_at.isoformat(),
-        "state": handle.state,
-        "policy": session_policy.model_dump(mode="json"),
-    }
-
-
-@app.post("/wsj-session/complete")
-async def wsj_session_complete(body: WsjSessionCompleteRequest):
-    heartbeat = vm_provider.heartbeat(session_ref=body.session_ref)
-    if not heartbeat.get("ok"):
-        return {"ok": False, "error": "session_not_active", "state": heartbeat.get("state")}
-    cookie = body.session_cookie.strip()
-    if not cookie:
-        return {"ok": False, "error": "session_cookie_required"}
-    artifact = AuthArtifact(kind="wsj_session_cookie", value=cookie, scope="wsj:morning-shot")
-    session_vault.put(session_ref=body.session_ref, client_key=body.client_key, artifact=artifact)
-    try:
-        await nap.post_audit(
-            {
-                "clientKey": body.client_key,
-                "agentType": "finance-analyst",
-                "eventType": "wsj_session_completed",
-                "correlationId": str(uuid.uuid4()),
-                "inputPayload": {"session_ref": body.session_ref},
-                "outputPayload": {
-                    "artifact_kind": body.artifact_kind,
-                    "state": "ready",
-                    "session_cookie_masked": _mask_secret(cookie),
-                },
-                "tokenIn": 1,
-                "tokenOut": 1,
-                "actionCount": 1,
-            }
-        )
-    except Exception:
-        pass
-    return {
-        "ok": True,
-        "session_ref": body.session_ref,
-        "vault_status": session_vault.status(session_ref=body.session_ref, client_key=body.client_key),
     }
 
 
