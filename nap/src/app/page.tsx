@@ -121,6 +121,8 @@ export default function Page() {
   const [wsjLoading, setWsjLoading] = useState(false);
   const [wsjBlockingError, setWsjBlockingError] = useState("");
   const [wsjRunStepIndex, setWsjRunStepIndex] = useState(0);
+  /** True after REQUIRES_AUTH: user is expected to finish sign-in in Live View, then use the second button. */
+  const [wsjAwaitingSignIn, setWsjAwaitingSignIn] = useState(false);
 
   useEffect(() => {
     if (!wsjLoading) {
@@ -296,10 +298,12 @@ export default function Page() {
           setWsjLiveViewUrl(data.interactive_live_view_url);
         }
         setWsjBlockingError("");
+        setWsjAwaitingSignIn(true);
       } else if (data.ok === true) {
         setWsjLiveViewUrl("");
         setWsjBrowserbaseSessionId("");
         setWsjBlockingError("");
+        setWsjAwaitingSignIn(false);
       } else {
         const parts: string[] = [];
         if (!napHttpOk) parts.push(`Finance/NAP HTTP error (wrapper ok=${String(json.ok)})`);
@@ -484,29 +488,48 @@ export default function Page() {
           >
             {WSJ_RUN_STEPS[wsjRunStepIndex]}
           </p>
+        ) : wsjAwaitingSignIn ? (
+          <p style={{ marginTop: 0, opacity: 0.85 }}>
+            Complete WSJ sign-in or verification in the Live View. When you are signed in, press{" "}
+            <strong>Run morning shot</strong> below (not the top control) to fetch content with this Browserbase session.
+            Alternatively set <code>WSJ_SESSION_COOKIE</code> on Finance for HTTP-only fetch without Browserbase. If{" "}
+            <code>WSJ_FORCE_REQUIRES_AUTH=true</code> is set on Finance, every run returns <code>REQUIRES_AUTH</code> only —
+            turn it off after testing Live View so the scrape can finish.
+          </p>
         ) : (
           <p style={{ marginTop: 0, opacity: 0.85 }}>
             WSJ HTML via <strong>Browserbase</strong> (Playwright + persisted context). Yahoo quotes and optional OpenAI
-            summary unchanged. NAP audit: <code>wsj_morning_shot</code>. Use <strong>Check WSJ session</strong> to start (session
-            probe + morning shot when already signed in). If Finance returns <code>REQUIRES_AUTH</code>, sign in via the Live
-            View below, then use <strong>Run morning shot</strong> to continue with the same Browserbase session. Alternatively
-            set <code>WSJ_SESSION_COOKIE</code> on Finance for legacy HTTP-only fetch without Browserbase. If{" "}
-            <code>WSJ_FORCE_REQUIRES_AUTH=true</code> is set on Finance, every run returns <code>REQUIRES_AUTH</code> only —
-            turn it off after testing Live View so the scrape can finish and this panel can clear.
+            summary unchanged. NAP audit: <code>wsj_morning_shot</code>. Press <strong>Run morning shot</strong> once: if a
+            subscriber session is already active, the morning shot runs immediately (no Live View). If Finance returns{" "}
+            <code>REQUIRES_AUTH</code>, use the embedded Live View to sign in, then press <strong>Run morning shot</strong>{" "}
+            again under the iframe. Alternatively set <code>WSJ_SESSION_COOKIE</code> on Finance for legacy HTTP-only fetch
+            without Browserbase. If <code>WSJ_FORCE_REQUIRES_AUTH=true</code> is set on Finance, every run returns{" "}
+            <code>REQUIRES_AUTH</code> only — turn it off after testing Live View so the scrape can finish and this panel can
+            clear.
           </p>
         )}
         <div style={{ display: "grid", gap: 8, marginBottom: 10 }}>
-          <button type="button" onClick={() => void runWsjMorningShot()} disabled={wsjLoading}>
-            {wsjLoading ? "Running…" : "Check WSJ session"}
+          <button
+            type="button"
+            onClick={() => void runWsjMorningShot()}
+            disabled={wsjLoading || wsjAwaitingSignIn}
+            title={wsjAwaitingSignIn ? "Use the button below the Live View after you are signed in" : undefined}
+          >
+            {wsjAwaitingSignIn
+              ? "Sign in to continue"
+              : wsjLoading
+                ? "Running morning shot…"
+                : "Run morning shot"}
           </button>
-          {wsjLiveViewUrl ? (
+          {wsjLiveViewUrl && wsjAwaitingSignIn ? (
             <div style={{ display: "grid", gap: 8 }}>
               <p style={{ margin: 0, opacity: 0.9 }}>
-                Sign in to WSJ in the embedded Live View (or{" "}
+                Sign in to WSJ in the embedded view (or{" "}
                 <a href={wsjLiveViewUrl} target="_blank" rel="noreferrer">
                   open in a new tab
                 </a>
-                ). Session: <code>{wsjBrowserbaseSessionId || "—"}</code>
+                ). When you are fully signed in, press <strong>Run morning shot</strong> below — the automated run will not
+                repeat until you do. Session: <code>{wsjBrowserbaseSessionId || "—"}</code>
               </p>
               <iframe
                 title="Browserbase Live View"
@@ -516,7 +539,7 @@ export default function Page() {
                 style={{ width: "100%", height: 520, border: "1px solid #ccc", borderRadius: 4 }}
               />
               <button type="button" onClick={() => void runWsjMorningShot()} disabled={wsjLoading || !wsjBrowserbaseSessionId}>
-                {wsjLoading ? "Running…" : "Run morning shot"}
+                {wsjLoading ? "Running morning shot…" : "Run morning shot"}
               </button>
             </div>
           ) : null}
@@ -543,7 +566,7 @@ export default function Page() {
               <span className="pill">equities: {wsjEquityFacts.length}</span>
               <span className="event-id">
                 {parsedWsjData.state === "REQUIRES_AUTH" || parsedWsjData.error === "REQUIRES_AUTH"
-                  ? "REQUIRES_AUTH — Live View, then Run morning shot"
+                  ? "REQUIRES_AUTH — sign in in Live View, then Run morning shot below"
                   : parsedWsjData.login_required
                     ? "login or session required"
                     : "session ok"}
